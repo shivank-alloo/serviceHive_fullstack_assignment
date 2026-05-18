@@ -2,7 +2,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'ax
 import { ApiErrorResponse } from '@/types/api.types';
 
 const axiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env['VITE_API_URL'] ?? '/api',
   withCredentials: true, // Send httpOnly cookies
   headers: {
     'Content-Type': 'application/json',

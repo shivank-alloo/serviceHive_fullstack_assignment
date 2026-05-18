@@ -1,0 +1,24 @@
+services:
+  # ── Backend API ────────────────────────────────────────────
+  - type: web
+    name: smart-leads-server
+    runtime: node
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5001
+      - key: MONGO_URI
+        sync: false          # Set manually in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true  # Render auto-generates a secure secret
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CLIENT_URL
+        sync: false          # Set to your Vercel frontend URL
+      - key: BCRYPT_SALT_ROUNDS
+        value: 12
+    healthCheckPath: /health
