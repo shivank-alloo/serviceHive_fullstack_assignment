@@ -15,7 +15,19 @@ const app: Application = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: (origin, callback) => {
+      // If no origin (like mobile apps or postman), allow it
+      if (!origin) return callback(null, true);
+      
+      const configuredClient = env.CLIENT_URL.replace(/\/$/, '');
+      const requestOrigin = origin.replace(/\/$/, '');
+      
+      if (requestOrigin === configuredClient || requestOrigin === 'http://localhost:5173') {
+        callback(null, true);
+      } else {
+        callback(null, false); // Block CORS
+      }
+    },
     credentials: true, // Allow cookies
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
