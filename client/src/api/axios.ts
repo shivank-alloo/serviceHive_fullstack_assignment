@@ -10,9 +10,15 @@ const axiosInstance = axios.create({
   timeout: 15000,
 });
 
-// Request interceptor — placeholder for future token injection
+// Request interceptor — attach Bearer token if present in localStorage
 axiosInstance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => config,
+  (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
   (error: AxiosError) => Promise.reject(error),
 );
 
@@ -21,7 +27,7 @@ axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError<ApiErrorResponse>) => {
     if (error.response?.status === 401) {
-      // Let callers handle 401 (React Query + AuthContext will redirect)
+      localStorage.removeItem('token');
     }
     return Promise.reject(error);
   },

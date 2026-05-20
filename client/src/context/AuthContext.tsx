@@ -37,11 +37,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = useCallback(async (payload: LoginPayload): Promise<void> => {
     const response = await authApi.login(payload);
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
     setUser(response.data.user);
   }, []);
 
   const register = useCallback(async (payload: RegisterPayload): Promise<void> => {
     const response = await authApi.register(payload);
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
     setUser(response.data.user);
   }, []);
 
@@ -49,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await authApi.logout();
     } finally {
+      localStorage.removeItem('token');
       setUser(null);
     }
   }, []);
