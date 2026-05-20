@@ -61,18 +61,6 @@ const Login = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-4">
-          {[
-            { value: '10k+', label: 'Leads tracked' },
-            { value: '98%', label: 'Uptime' },
-            { value: '3 roles', label: 'Access control' },
-          ].map((stat) => (
-            <div key={stat.label} className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/20">
-              <p className="text-white font-bold text-lg">{stat.value}</p>
-              <p className="text-brand-200 text-xs">{stat.label}</p>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Right — form */}
